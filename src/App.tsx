@@ -570,16 +570,16 @@ export default function App() {
                 {/* Simulated stats */}
                 <div className="grid grid-cols-3 gap-2 border-t border-slate-800/20 pt-4 text-center font-mono">
                   <div>
-                    <div className="text-blue-500 font-bold text-sm">8.1</div>
-                    <div className="text-[9px] text-slate-500">B.Tech CGPA</div>
+                    <div className="text-blue-500 font-bold text-sm">10+</div>
+                    <div className="text-[9px] text-slate-500 font-sans">Projects</div>
                   </div>
                   <div>
-                    <div className="text-teal-400 font-bold text-sm">100%</div>
-                    <div className="text-[9px] text-slate-500">SSC Score</div>
+                    <div className="text-teal-400 font-bold text-sm">8+</div>
+                    <div className="text-[9px] text-slate-500 font-sans">Certificates</div>
                   </div>
                   <div>
-                    <div className="text-indigo-400 font-bold text-sm">2027</div>
-                    <div className="text-[9px] text-slate-500">Grad Year</div>
+                    <div className="text-indigo-400 font-bold text-sm">15+</div>
+                    <div className="text-[9px] text-slate-500 font-sans">Tech Skills</div>
                   </div>
                 </div>
               </div>
