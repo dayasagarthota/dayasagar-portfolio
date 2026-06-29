@@ -23,6 +23,8 @@ app.post('/api/send', async (req, res) => {
     return res.status(400).json({ error: 'Name, email, and message are required fields.' });
   }
 
+  console.log(`[${new Date().toLocaleTimeString()}] Received email submission request from ${name} <${email}>`);
+
   try {
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -51,13 +53,14 @@ app.post('/api/send', async (req, res) => {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Resend API response error:', data);
+      console.error(`[${new Date().toLocaleTimeString()}] Resend API response error:`, data);
       return res.status(response.status).json({ error: data.message || 'Failed to send email via Resend' });
     }
 
+    console.log(`[${new Date().toLocaleTimeString()}] Resend email sent successfully! ID: ${data.id}`);
     res.status(200).json({ success: true, data });
   } catch (error) {
-    console.error('Server error forwarding mail request:', error);
+    console.error(`[${new Date().toLocaleTimeString()}] Server error forwarding mail request:`, error);
     res.status(500).json({ error: 'Internal server error processing email dispatch' });
   }
 });

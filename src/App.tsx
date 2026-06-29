@@ -197,6 +197,7 @@ export default function App() {
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [showImageModal, setShowImageModal] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
 
 
@@ -252,6 +253,7 @@ export default function App() {
     e.preventDefault();
     if (formState.name && formState.email && formState.message) {
       setFormSubmitting(true);
+      setFormError(null);
 
       const apiEndpoint = import.meta.env.DEV
         ? "http://localhost:3001/api/send"
@@ -268,25 +270,24 @@ export default function App() {
           message: formState.message
         })
       })
-        .then(response => {
+        .then(async response => {
+          const data = await response.json();
           if (!response.ok) {
-            throw new Error('Server responded with an error');
+            throw new Error(data.error || 'Failed to send email.');
           }
-          return response.json();
+          return data;
         })
         .then(() => {
           setFormSubmitting(false);
           setFormSubmitted(true);
+          setFormError(null);
           setFormState({ name: '', email: '', message: '' });
           setTimeout(() => setFormSubmitted(false), 5000);
         })
         .catch((error) => {
           console.error("Error submitting form", error);
           setFormSubmitting(false);
-          // Fallback user notification or local simulation state
-          setFormSubmitted(true);
-          setFormState({ name: '', email: '', message: '' });
-          setTimeout(() => setFormSubmitted(false), 5000);
+          setFormError(error.message || "Failed to connect to email backend server. Make sure it is active.");
         });
     }
   };
@@ -1092,6 +1093,12 @@ export default function App() {
                         }`}
                     />
                   </div>
+
+                  {formError && (
+                    <div className="p-4 rounded-xl text-xs sm:text-sm font-medium bg-red-500/10 text-red-500 border border-red-500/10 animate-shake">
+                      ⚠️ {formError}
+                    </div>
+                  )}
 
                   <button
                     type="submit"
